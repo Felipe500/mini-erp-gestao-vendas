@@ -1,0 +1,27 @@
+image: python:3.8
+
+pipelines:
+  branches:
+      main:
+      - step:
+          name: Build and Test
+          caches:
+            - pip
+          script:
+            - export TRAMPOLINE_CI=true
+            - echo 'SECRET_KEY=$SECRET_KEY_DJANGO' > .env
+            - pip install poetry
+            - poetry export -f requirements.txt --output requirements.txt --without-hashes
+            - pip install -r requirements.txt
+            - python manage.py migrate
+
+      - step:
+         name: Deploy to production - vps hostinger
+         deployment: production
+         script:
+           - pipe: atlassian/ssh-run:0.3.0
+             variables:
+               SSH_USER: $SSH_USER
+               SERVER: $SSH_SERVER_01
+               COMMAND: >
+                 ./portifolio-deploy.sh
