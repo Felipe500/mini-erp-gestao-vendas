@@ -1,0 +1,55 @@
+{% load static %}
+<h6>PERFIL DO USUÁRIO</h6>
+<hr>
+<form method="post" enctype="multipart/form-data" class="row g-3" id="id_form_change_user">
+    {% csrf_token %}
+    <div class="card text-center">
+      <div class="card-body">
+            {% if photo_perfil %}
+            <img  id="img_card" src="{{ photo_perfil }}" class="card-img-top"
+                  alt="..." style="width: 10rem;">
+            {% else %}
+            <img  id="img_card" src="{% static 'images/avatar3.png' %}" class="card-img-top"
+                  alt="..."  style="width: 10rem;">
+            {% endif %}
+      </div>
+    </div>
+
+    <div id="div_id_photo" class="form-group">
+            <label for="id_photo" class=" requiredField">
+                {{form.photo.label}}
+            </label>
+             <div>
+                {{form.photo}}
+            </div>
+            {% if photo.photo.errors %}
+                <p id="error_id_photo" class="invalid-feedback">
+                    <strong>{{form.photo.errors|striptags}}</strong>
+                </p>
+            {% endif %}
+        </div>
+
+     <div class="col-md-12">
+            <label for="id_name" class="form-label">{{form.name.label}}</label>
+            {{form.name}}
+            {% if form.name.errors %}
+                <p id="error_id_name" class="invalid-feedback" style="display: block;">
+                    {{form.name.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+   <div class="col-md-12">
+            <label for="id_email" class="form-label">{{form.email.label}}</label>
+            {{form.email}}
+            {% if form.email.errors %}
+                <p id="error_id_email" class="invalid-feedback" style="display: block;">
+                    {{form.email.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+    <div class="col-md-12">
+        <button type="button" class="btn btn-primary text-white" id="button_action" onclick="change_user()">
+            Salvar
+        </button>
+    </div>
+ </form>

@@ -1,0 +1,6 @@
+{{form.cliente}}
+{% if form.cliente.errors %}
+    <p id="error_id_cliente" class="invalid-feedback" style="display: block;">
+        {{form.cliente.errors|striptags}}
+    </p>
+{% endif %}

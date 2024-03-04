@@ -1,0 +1,51 @@
+<h6>PAGAMENTOS</h6>
+<hr>
+
+<div class="form-group">
+    {% if pk %}
+        <h5>Atualizar Máquina de Cartão de Crédito</h5>
+    {% else %}
+        <h5>Adicionar Nova Máquina de Cartões de Crédito</h5>
+    {% endif %}
+    <br>
+</div>
+
+<form id="id_form_machine_card" method="post" class="row g-3">
+    {% csrf_token %}
+    {% for field in form %}
+        {% if field.name == "name" %}
+          <div class="col-md-12">
+            {{ field.label_tag }}
+            {{ field }}
+            {{ field.help_text }}
+              {% if field.errors %}
+                    <p id="error_id_{{field.name}}" class="invalid-feedback" style="display: block;">
+                        {{field.errors|striptags}}
+                    </p>
+                {% endif %}
+          </div>
+        {% else %}
+
+        <div class="col-md-3">
+            {{ field.label_tag }}
+            {{ field }}
+            {{ field.help_text }}
+              {% if field.errors %}
+                    <p id="error_id_{{field.name}}" class="invalid-feedback" style="display: block;">
+                        {{field.errors|striptags}}
+                    </p>
+                {% endif %}
+        </div>
+       {% endif %}
+
+  {% endfor %}
+
+    <div class="form-row">
+         {% if pk %}
+            <button class="btn btn-success" type="button" onclick="update_machine_card({{pk}})">Salvar</button>
+        {% else %}
+            <button class="btn btn-success" type="button" onclick="create_machine_card()">Salvar</button>
+        {% endif %}
+        <button class="btn btn-secondary" type="button" onclick="list_machine_card()">Cancelar</button>
+    </div>
+  </form>

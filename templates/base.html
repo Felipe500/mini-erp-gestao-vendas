@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="h-100">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'css/style-form-pag.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <title>{% block title %}{% endblock %}</title>
+    {% block extra_head %}
+
+    {% endblock %}
+</head>
+<body class="d-flex flex-column h-100">
+
+    <header>
+        <nav class="navbar navbar-expand-lg" style="background-color: #5e16ce; color: white;">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#" style=" color: white;">MINI ERP</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02"
+                     aria-expanded="false" aria-label="Toggle navigation">
+              <span style=" color: white;" class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link active" style="color: white;" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                     <a class="nav-link active" style="color: white;" href="{% url 'dashboard' %}">Painel de vendas <span class="sr-only">(current)</span></a>
+                </li>
+                  <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown2" style="color: white;" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Cadastros
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown2">
+                      <li><a class="dropdown-item" href="{% url 'client_list' %}">Clientes</a></li>
+                      <li><a class="dropdown-item" href="{% url 'produto_list' %}">Produtos</a></li>
+                      <li><a class="dropdown-item" href="{% url 'categorias_produtos' %}">Categorias de Produto</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                      <a class="nav-link" style="color: white;" href="{% url 'estoque_produtos' %}">Estoque</a>
+                </li>
+                  <li class="nav-item">
+                      <a class="nav-link" style="color: white;" href="{% url 'lista-vendas' %}">Vendas</a>
+                </li>
+                  <li class="nav-item">
+                     <a class="nav-link" style="color: white;" href="{% url 'movimentacoes' %}">Minhas Movimentações</a>
+                </li>
+                  <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown1" style="color: white;" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Controle de contas
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown1">
+                    <li><a class="dropdown-item" href="{% url 'contas_pagar' %}">Conta a pagar</a></li>
+                    <li><a class="dropdown-item" href="{% url 'contas_receber' %}">Contas a receber</a></li>
+                  </ul>
+                </li>
+              </ul>
+              <ul class="navbar-nav ml-md-auto">
+                {% if user.is_authenticated %}
+                    <spam style="color:white">Olá {{ user.name|slice:":12" }}
+                    <a href="{% url 'settings_app' %}" style="color: #fff;">Configurações</a>
+                    {% if user.photo %}
+                       <a class="navbar-brand" href="#">
+                          <img src="{{ user.photo.url }}" alt="" width="30" height="24"  class="rounded-circle">
+                       </a>
+                    {% else %}
+                        <a class="navbar-brand" href="#">
+                           <img src="{% static 'images/avatar3.png' %}" alt="" width="30" height="24"  class="rounded-circle">
+                        </a>
+                    {% endif %}
+
+                  <a href="{% url 'logout' %}" class="btn btn-info">Sair</a></spam>
+                  <hr>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-info">Entrar</a>
+                <hr>
+
+                {% endif %}
+            </ul>
+
+            </div>
+          </div>
+        </nav>
+    </header>
+        {% block extranavbar %}
+        {% endblock %}
+
+    <main class="flex-shrink-0">
+        <div class="toast-container position-absolute top-4 end-0 p-4">
+            <div id="toast_message" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="d-flex">
+                <div class="toast-body">
+                  Hello, world! This is a toast message.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast2" aria-label="Close" onclick="toast_hide()"></button>
+              </div>
+            </div>
+        </div>
+
+        <div class="container">
+        {% block main %}
+        {% endblock %}
+        </div>
+    </main>
+
+        {% block extra %}
+        {% endblock %}
+
+    {% block footer %}
+    <!-- Footer -->
+    <footer class="footer mt-auto py-3" style="background-color: rgba(59, 8, 134, 0.95);">
+      <div class="container" style="text-align: center;">
+        <span  style="color: white;"> © 2022 Copyright:</span>
+
+            <a class="text-white" href="#" style="text-decoration: none;">Felipe Brx Oliveira v3</a>
+      </div>
+
+    </footer>
+    <!-- Footer -->
+    {% endblock %}
+    <script src="{% static 'js/jquery-ajax.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script>
+        $( document ).ready(function() {
+           $('.openBtn').on('click',function(){
+        });
+
+        });
+    </script>
+    {% block staticfiles %}
+
+    {% endblock %}
+    </body>
+</html>

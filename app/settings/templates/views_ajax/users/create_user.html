@@ -1,0 +1,84 @@
+<h6>CADASTRAR NOVO USUÁRIO</h6>
+<hr>
+<form method="post" class="row g-3" id="id_form_user_{{pk}}" autocomplete="off">
+    {% csrf_token %}
+
+     <div class="col-md-12">
+            <label for="id_name" class="form-label">{{form.name.label}}</label>
+            {{form.name}}
+            {% if form.name.errors %}
+                <p id="error_id_name" class="invalid-feedback" style="display: block;">
+                    {{form.name.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+   <div class="col-md-12">
+        <label for="id_email" class="form-label">{{form.email.label}}</label>
+        {{form.email}}
+        {% if form.email.errors %}
+            <p id="error_id_email" class="invalid-feedback" style="display: block;">
+                {{form.email.errors|striptags}}
+            </p>
+        {% endif %}
+   </div>
+
+     {% if pk == 0 %}
+    <div class="col-md-3">
+        <label for="id_password1" class="form-label">{{form.password1.label}}</label>
+        {{form.password1}}
+        {% if form.password1.errors %}
+            <p id="error_password1" class="invalid-feedback" style="display: block;">
+                {{form.password1.errors|striptags}}
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="col-md-3">
+            <label for="id_email" class="form-label">{{form.password2.label}}</label>
+            {{form.password2}}
+            {% if form.password2.errors %}
+                <p id="error_id_password2" class="invalid-feedback" style="display: block;">
+                    {{form.password2.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+     <div class="col-md-3">
+            <label for="id_groups" class="form-label">{{form.access_group.label}}</label>
+            {{form.access_group}}
+            {% if form.access_group.errors %}
+                <p id="error_id_access_group" class="invalid-feedback" style="display: block;">
+                    {{form.access_group.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+
+
+       <div class="col-md-12">
+        <button type="button" class="btn btn-primary text-white" id="button_action" onclick="create_or_update_user({{pk}})">
+             Criar Novo Usuário
+        </button>
+         <button type="button" class="btn btn-danger text-white" id="button_action_cancel" onclick="form_control_access()">
+             Cancelar
+        </button>
+    </div>
+    {% else %}
+     <div class="col-md-3">
+            <label for="id_access_group" class="form-label">{{form.access_group.label}}</label>
+            {{form.access_group}}
+            {% if form.access_group.errors %}
+                <p id="error_id_access_group" class="invalid-feedback" style="display: block;">
+                    {{form.access_group.errors|striptags}}
+                </p>
+            {% endif %}
+     </div>
+        <div class="col-md-12">
+        <button type="button" class="btn btn-primary text-white" id="button_action" onclick="create_or_update_user({{pk}})">
+             Atualizar
+        </button>
+         <button type="button" class="btn btn-danger text-white" id="button_action_cancel" onclick="form_control_access()">
+             Cancelar
+        </button>
+    </div>
+    {% endif %}
+
+ </form>

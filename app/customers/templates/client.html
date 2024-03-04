@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Clientes {% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/cliente.css' %}">
+{% endblock %}
+
+{% block main %}
+
+
+<div class="container" id="container_page">
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal_client" tabindex="-1" aria-labelledby="modal_clientLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" style="color:black;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="title_modal">Dados do Cliente</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+
+              </div>
+              <div class="modal-footer">
+                   <button onclick="delete_client('1')" type="button"
+                           class="btn btn-danger" id="button_action">
+                        Deletar
+                    </button>
+                   <button id="button_close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                       Fechar
+                   </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <h3 class="header_text">Listagem de Clientes</h3>
+        <br>
+
+     <section class="container">
+      <h2 class="py-2">Datepicker in Bootstrap 5</h2>
+      <form class="row">
+        <label for="date" class="col-1 col-form-label">Date</label>
+        <div class="col-5">
+          <div class="input-group date" id="datepicker">
+            <input type="text" class="form-control" id="date" />
+            <span class="input-group-append">
+              <span class="input-group-text bg-light d-block">
+                <i class="fa fa-calendar"></i>
+              </span>
+            </span>
+          </div>
+        </div>
+      </form>
+    </section>
+
+        <ul class="nav" STYLE="padding: 10px 0px 1px 0px;">
+          <li class="nav-item">
+                <button type="button" class="btn btn-primary " style="color: white;"
+                      onclick="view_create_client()"
+                      data-bs-toggle="modal" data-bs-target="#modal_client">
+                    <i class="fa-solid fa-plus"></i> NOVO CLIENTE
+                </button>
+          </li>
+        </ul>
+        <br>
+             <div class="row row-cols-lg-auto g-3 align-items-center">
+          <div class="col-sm-12">
+            <div class="input-group">
+                <input type="text" name="name_product" class="form-control"
+                       placeholder="Nome da Categoria" id="id_query" onkeyup="update_list_client()">
+                <span class="input-group-text" style="background-color: #0d85bf;color: white; display: none;"
+                      id="loading_search">
+                    <div class="spinner-border text-primary spinner-border-sm" role="status" >
+                      <span class="visually-hidden"></span>
+                    </div>
+                </span>
+                <span class="input-group-text" style="background-color: #0d85bf;color: white;" id="id_search">
+                    <i class="fas fa-search"></i>
+                </span>
+            </div>
+          </div>
+
+        </div><br>
+
+            <div id="list_clients">
+            </div>
+        <br>
+    </div>
+
+
+{% endblock %}
+
+{% block staticfiles %}
+    <script src="{% static 'js/client.js' %}"></script>
+{% endblock %}

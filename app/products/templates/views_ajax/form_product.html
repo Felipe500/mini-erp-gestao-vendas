@@ -1,0 +1,51 @@
+
+    <form class="row g-3" method="post" id="product_form_{{ id_product }}">
+        {% csrf_token %}
+        <div class="col-md-12">
+            <label for="id_description" class="form-label">{{form.description.label}}</label>
+            {{form.description}}
+            {% if form.description.errors %}
+                <p id="error_id_description" class="invalid-feedback" style="display: block;">
+                    {{form.description.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <label for="id_price" class="form-label">{{form.price.label}}</label>
+            {{form.price}}
+            {% if form.price.errors %}
+                <p id="error_id_price" class="invalid-feedback" style="display: block;">
+                    {{form.price.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <label for="id_category" class="form-label">{{form.category.label}}</label>
+            {{form.category}}
+            {% if form.category.errors %}
+                <p id="error_id_category" class="invalid-feedback" style="display: block;">
+                    {{form.category.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <label for="id_current_stock" class="form-label">{{form.current_stock.label}}</label>
+            {{form.current_stock}}
+            {% if form.current_stock.errors %}
+                <p id="error_id_current_stock" class="invalid-feedback" style="display: block;">
+                    {{form.current_stock.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            <label for="id_minimum_stock" class="form-label">{{form.minimum_stock.label}}</label>
+            {{form.minimum_stock}}
+            {% if form.minimum_stock.errors %}
+                <p id="error_id_minimum_stock" class="invalid-feedback" style="display: block;">
+                    {{form.minimum_stock.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+
+    </form>

@@ -1,0 +1,5 @@
+
+<form method="post" id="item_delete_form_{{ id_object }}">
+    {% csrf_token %}
+    Deseja realmente deletar o item <b>{{name_product}}</b>?
+</form>

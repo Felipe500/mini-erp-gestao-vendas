@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Vendas {% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/venda.css' %}">
+{% endblock %}
+
+{% block main %}
+<div class="container" id="container_page">
+    <h3 class="header_text">Vendas</h3>
+
+    <h6 style="color:white">Total: {{count_vendas}} vend{{count_vendas|pluralize:"a,as"}} </h6>
+
+    <ul class="nav" STYLE="padding: 5px 0px 10px 0px;">
+      <li class="nav-item">
+            <a href="{% url 'novo-pedido' %}"><button type="button" class="btn btn-primary">Nova venda</button></a>
+      </li>
+    </ul>
+
+    <div id="list_vendas">
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block staticfiles %}
+    <script src="{% static 'js/sale.js' %}"></script>
+    <script src="{% static 'js/funcoes.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            update_list_vendas(1);
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,28 @@
+
+    <form class="row g-3" method="post" id="stock_form_{{ id_object }}">
+        {% csrf_token %}
+        <div class="col-md-12">
+            <h4 class="header_text">{{name_product}}</h4>
+        </div>
+
+        <div class="col-md-6">
+            <label for="id_estoque_atual" class="form-label">{{form.current_stock.label}}</label>
+            {{form.current_stock}}
+            {% if form.current_stock.errors %}
+                <p id="error_id_current_stock" class="invalid-feedback" style="display: block;">
+                    {{form.current_stock.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            <label for="id_minimum_stock" class="form-label">{{form.minimum_stock.label}}</label>
+            {{form.minimum_stock}}
+            {% if form.minimum_stock.errors %}
+                <p id="error_id_minimum_stock" class="invalid-feedback" style="display: block;">
+                    {{form.minimum_stock.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+
+    </form>

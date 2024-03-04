@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+{% load static %}
+{% load my_tags %}
+
+{% block title %} Detalhe cliente {% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/cliente.css' %}">
+{% endblock %}
+
+
+{% block main %}
+
+<div class="container" id="container_page">
+
+        <h3 class="header_text">
+             {% if client %}
+                Dados do Cliente
+             {% else %}
+                Novo Cliente
+            {% endif %}
+        </h3>
+          <ul class="nav nav-tabs" id="tabs_client" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
+                      type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Dados Pessoais</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
+                      type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Compras Realizadas</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane"
+                      type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Contact</button>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+              <br><br>
+            <form method="POST"  class="row g-3">
+              {% csrf_token %}
+              <div class="col-md-4">
+                <label for="id_nome" class="form-label">{{form.name.label}}</label>
+                {{form.name}}
+              </div>
+              <div class="col-md-4">
+                <label for="id_sobrenome" class="form-label">{{form.surname.label}}</label>
+                {{form.surname}}
+              </div>
+              <div class="col-md-4">
+                <label for="id_data_nasc" class="form-label">{{form.birth_date.label}}</label>
+                {{form.birth_date}}
+              </div>
+
+              <div class="col-md-4">
+                <label for="id_celular" class="form-label">{{form.celular.label}}</label>
+                {{form.celular}}
+              </div>
+              <div class="col-md-4">
+                <label for="id_email" class="form-label">{{form.email.label}}</label>
+                {{form.email}}
+              </div>
+              <div class="col-md-4">
+                <label for="id_cep" class="form-label">{{form.cep.label}}</label>
+                {{form.cep}}
+              </div>
+                <div class="col-md-12">
+                <label for="id_endereco" class="form-label">{{form.endereco.label}}</label>
+                {{form.endereco}}
+              </div>
+
+              <ul class="nav justify-content-center">
+                  <li class="nav-item actions_form" >
+                     <button class="btn btn-primary" type="submit">Salvar</button>
+                  </li>
+                  <li class="nav-item actions_form" >
+                     <a href="{% url 'person_list' %}" >
+                          <button type="button" class="btn btn-danger">
+                              Cancelar
+                          </button>
+                      </a>
+                  </li>
+                </ul>
+        </form>
+        <br>
+
+            </div>
+
+            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+
+
+            </div>
+
+            <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+
+
+            </div>
+          </div>
+
+
+
+
+    </div>
+
+
+{% endblock %}

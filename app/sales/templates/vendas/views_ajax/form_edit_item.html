@@ -1,0 +1,11 @@
+<form method="POST"  class="row g-3" id="edit_item_form_{{ id_object }}">
+    {% csrf_token %}
+    <div class="col-md-6">
+        <label for="id_nome" class="form-label">{{form.desconto.label}}</label>
+        {{form.desconto}}
+    </div>
+    <div class="col-md-6">
+        <label for="id_sobrenome" class="form-label">{{form.quantidade.label}}</label>
+        {{form.quantidade}}
+    </div>
+</form>

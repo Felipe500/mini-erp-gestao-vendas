@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="card" style="width: 18rem;">
+  <img src="..." class="card-img-top" alt="...">
+  <div class="card-body">
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
+<h1>DASHBOARD</h1>
+<ul>
+    <li>Media de vendas - &nbsp;{{ media }}</li>
+    <li>Menor de desconto - &nbsp;{{ media_desc }}</li>
+    <li>Maior venda - &nbsp;{{ min }}</li>
+     <li>Menor de vendas - &nbsp;{{ max }}</li>
+    <li>Número de pedidos - &nbsp;{{ n_ped }}</li>
+</ul>
+{% endblock %}

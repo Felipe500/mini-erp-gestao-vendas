@@ -1,0 +1,12 @@
+<form class="row g-3" method="post" id="category_form_{{ id_category }}">
+    {% csrf_token %}
+    <div class="col-md-12">
+        <label for="id_descricao" class="form-label">{{form.name.label}}</label>
+        {{form.name}}
+        {% if form.name.errors %}
+            <p id="error_id_nome" class="invalid-feedback" style="display: block;">
+                {{form.name.errors|striptags}}
+            </p>
+        {% endif %}
+    </div>
+</form>

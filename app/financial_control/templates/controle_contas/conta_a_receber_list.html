@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Contas a Receber {% endblock %}
+
+{% block extra_head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/cliente.css' %}">
+{% endblock %}
+
+
+{% block main %}
+<div class="container" id="container_page">
+
+    <div class="modal fade" id="modal_view" tabindex="-1" aria-labelledby="modal_viewLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" style="color:black;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="title_modal">Dados do Cliente</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+               <div class="modal-body" id="body_modal_view">
+
+              </div>
+              <div class="modal-footer">
+                   <button onclick="" type="button"
+                           class="btn btn-danger" id="button_action">
+                        Deletar
+                    </button>
+                   <button id="button_close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                       Fechar
+                   </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    <br>
+    <h3 class="header_text">CONTAS A RECEBER</h3>
+
+    <button type="button" class="btn btn-primary " style="color: white;"
+          onclick="view_create_bills_receive()"
+          data-bs-toggle="modal" data-bs-target="#modal_view">
+        <i class="fa-solid fa-plus"></i> Nova Conta a receber
+    </button>
+    <br>
+    <br>
+    <form  method="GET" class="row g-3">
+        <div class="col-md-3">
+            <div id="div_id_descricao_filter" class="form-group">
+             <label for="id_descricao_filter" class="">
+                 {{filters.descricao_filter.label}}:
+             </label>
+             <div>
+                 {{ filters.descricao_filter }}
+             </div>
+             {% if filters.descricao_filter.errors %}
+                <p id="error_id_descricao_filter" class="invalid-feedback">
+                    <strong>{{filters.descricao_filter.errors|striptags}}</strong>
+                </p>
+            {% endif %}
+         </div>
+        </div>
+
+        <div class="col-md-2">
+            <div id="div_id_status_filter" class="form-group">
+                 <label for="id_status_filter" class="">
+                     {{filters.status_filter.label}}:
+                </label>
+                 <div>
+                       {{ filters.status_filter }}
+                 </div>
+                 {% if filters.status_filter.errors %}
+                    <p id="error_id_status_filter" class="invalid-feedback">
+                        <strong>{{filters.status_filter.errors|striptags}}</strong>
+                    </p>
+                {% endif %}
+             </div>
+
+        </div>
+        <div class="col-md-3">
+             <label for="id_categoria_filter" class="">
+                 {{filters.categoria_filter.label}}:
+            </label>
+             <div>
+                   {{ filters.categoria_filter }}
+             </div>
+             {% if filters.categoria_filter.errors %}
+                <p id="error_id_categoria_filter" class="invalid-feedback">
+                    <strong>{{filters.categoria_filter.errors|striptags}}</strong>
+                </p>
+            {% endif %}
+        </div>
+
+
+        <div class="col-md-2">
+            <div id="div_id_start_date" class="form-group">
+                 <label for="id_start_date_filter" class="">
+                     {{filters.start_date_filter.label}}:
+                </label>
+                 <div>
+                       {{ filters.start_date_filter }}
+                 </div>
+                 {% if filters.start_date_filter.errors %}
+                    <p id="error_id_start_date" class="invalid-feedback">
+                        <strong>{{filters.start_date_filter.errors|striptags}}</strong>
+                    </p>
+                {% endif %}
+             </div>
+
+        </div>
+        <div class="col-md-2">
+             <label for="id_end_date" class="">
+                 {{filters.end_date_filter.label}}:
+            </label>
+             <div>
+                 {{ filters.end_date_filter }}
+             </div>
+             {% if filters.end_date_filter.errors %}
+                <p id="error_id_end_date" class="invalid-feedback">
+                    <strong>{{filters.end_date_filter.errors|striptags}}</strong>
+                </p>
+            {% endif %}
+        </div>
+    </form>
+
+
+    <div id="list_contas">
+    </div>
+    <br>
+<!-- End container_page-->
+</div>
+
+{% endblock %}
+
+{% block staticfiles %}
+
+  <script src="{% static 'js/bills_to_receive.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            update_list_to_receive(1);
+        });
+    </script>
+
+{% endblock %}

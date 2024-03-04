@@ -1,0 +1,94 @@
+<div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="head_column_table">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Desconto</th>
+            <th scope="col">Cliente</th>
+            <th scope="col">Status</th>
+            <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody class="line_table">
+        {% for sale in sales %}
+            <tr style="background: #c0d0e1;">
+                <td>{{ sale.id }}</td>
+                <td>{{ sale.value }}</td>
+                <td>{{ sale.discount }}</td>
+                <td>{{ sale.client }}</td>
+                <td>  <strong> {{ sale.get_status_display }}  </strong></td>
+                <td>
+                    <a href="{% url 'edit-pedido' sale.id %}">
+                        <span class="badge badge-danger" style="background-color: #ff740fdb;font-size: 16px">
+                            Editar
+                        </span>
+                    </a>
+                        {% csrf_token %}
+                        {% if sale.status == 'cancel'%}
+                        <button type="button" onclick="alter_status_list({{ sale.id }},'not_pay')"
+                            class="badge badge-success" style="background-color: #44bf0ce6;font-size: 16px;border: none;">
+                            Recuperar
+                        </button>
+                        {% elif sale.status == 'not_pay' or  sale.status == 'paid'%}
+                        <button type="button" onclick="alter_status_list({{ sale.id }},'cancel')"
+                            class="badge badge-danger" style="background-color: #fd1515db;font-size: 16px;border: none;">
+                            Cancelar
+                        </button>
+                        {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <nav aria-label="...">
+      <ul class="pagination">
+              <input type="hidden" id="id_page_itens" name="page_itens" value="{{page_obj.object_list|length}}">
+              <input type="hidden" id="id_page_index" name="page_index" value="{{ page_obj.number }}">
+              {% if page_obj.has_previous %}
+            <li class="page-item">
+                <button type="button" class="page-link" onclick="update_list_vendas({{page_obj.previous_page_number}})">
+                    Anterior
+                </button>
+            </li>
+              {% else %}
+              <li class="page-item disabled">
+                  <a class="page-link" href="#">Anterior</a>
+              </li>
+               {% endif %}
+
+            {% for num_page in  page_obj.paginator.page_range %}
+              {% if page_obj.number == num_page %}
+                <li class="page-item active">
+                  <span class="page-link">
+                    {{ num_page }}
+                    <span class="sr-only">(current)</span>
+                  </span>
+                </li>
+              {% else %}
+                <li class="page-item">
+                    <button type="button" class="page-link"  onclick="update_list_vendas({{ num_page }})">
+                        {{ num_page }}
+                    </button>
+                </li>
+              {% endif %}
+
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                   <button type="button" class="page-link"
+                           onclick="update_list_vendas({{ page_obj.next_page_number }})">
+                       Próximo
+                   </button>
+
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                  <a class="page-link"  href="#">Próximo</a>
+                </li>
+            {% endif%}
+          </ul>
+    </nav>
+</div>

@@ -1,0 +1,94 @@
+<div class="table-responsive">
+        <table class="table table-hover">
+          <thead id="head_column_table">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Descrição</th>
+              <th scope="col">valor</th>
+              <th scope="col">Categoria</th>
+              <th scope="col">Status</th>
+              <th scope="col">Data</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+        {% for conta_receber in contas_receber %}
+          <tbody id="line_table">
+            <tr>
+                <td>{{ conta_receber.id }}</td>
+                <td>{{ conta_receber.description|upper }}</td>
+                <td>{{ conta_receber.value|upper }}</td>
+                <td> {{ conta_receber.get_category_display|upper }}</td>
+                <td> {{ conta_receber.get_status_display|upper }}</td>
+                <td> {{ conta_receber.created_at|date  }}</td>
+                <td>
+                  <button type="button" class="btn btn-danger openBtn"
+                         onclick="view_delete_bills_receive({{conta_receber.id}}, '{{conta_receber.descricao}}')"
+                          data-bs-toggle="modal" data-bs-target="#modal_view">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="btn btn-warning openBtn" style="color: white;"
+                          onclick="view_update_bills_receive({{conta_receber.id}})"
+                          data-bs-toggle="modal" data-bs-target="#modal_view">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
+                {% empty %}
+                <p>Não consta registro no sistema...</p>
+                {% endfor %}
+            </tr>
+
+          </tbody>
+        </table>
+    </div>
+
+
+    <nav aria-label="...">
+      <input type="hidden" id="id_page_itens" name="page_itens" value="{{page_obj.object_list|length}}">
+      <input type="hidden" id="id_page_index" name="page_index" value="{{ page_obj.number }}">
+      <ul class="pagination">
+
+          {% if page_obj.has_previous %}
+        <li class="page-item">
+            <button type="button" class="page-link"  onclick="update_list_to_receive({{page_obj.previous_page_number}})">
+                Anterior
+            </button>
+        </li>
+          {% else %}
+          <li class="page-item disabled">
+              <a class="page-link" href="#">Anterior</a>
+          </li>
+           {% endif %}
+
+        {% for num_page in  page_obj.paginator.page_range %}
+
+        {% if page_obj.number == num_page %}
+            <li class="page-item active">
+              <span class="page-link">
+                {{ num_page }}
+                <span class="sr-only">(current)</span>
+              </span>
+            </li>
+          {% else %}
+            <li class="page-item">
+                <button type="button" class="page-link"  onclick="update_list_to_receive({{ num_page }})">
+                    {{ num_page }}
+                </button>
+            </li>
+          {% endif %}
+
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                 <button type="button" class="page-link" onclick="update_list_to_receive({{ page_obj.next_page_number }})">
+                   Próximo
+               </button>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+              <a class="page-link"  href="#">Próximo</a>
+            </li>
+        {% endif%}
+      </ul>
+    </nav>
+

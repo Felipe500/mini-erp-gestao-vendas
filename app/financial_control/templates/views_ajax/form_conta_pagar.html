@@ -1,0 +1,41 @@
+
+    <form class="row g-3" method="post" id="bills_form_{{ id_object }}">
+        {% csrf_token %}
+        <div class="col-md-6">
+            <label for="id_description" class="form-label">{{form.description.label}}</label>
+            {{form.description}}
+            {% if form.description.errors %}
+                <p id="error_id_description" class="invalid-feedback" style="display: block;">
+                    {{form.description.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <label for="id_valuer" class="form-label">{{form.value.label}}</label>
+            {{form.value}}
+            {% if form.value.errors %}
+                <p id="error_id_value" class="invalid-feedback" style="display: block;">
+                    {{form.value.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <label for="id_category" class="form-label">{{form.category.label}}</label>
+            {{form.category}}
+            {% if form.category.errors %}
+                <p id="error_id_category" class="invalid-feedback" style="display: block;">
+                    {{form.category.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <label for="id_status" class="form-label">{{form.status.label}}</label>
+            {{form.status}}
+            {% if form.status.errors %}
+                <p id="error_id_status" class="invalid-feedback" style="display: block;">
+                    {{form.status.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+
+    </form>

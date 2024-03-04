@@ -1,0 +1,46 @@
+<form method="POST" class="row g-3" id="update_header_venda_{{ id_object }}">
+    {% csrf_token %}
+    <div class="col-md-6">
+        <label for="id_cliente" class="form-label">{{form.cliente.label}}</label>
+        <div id="set_list_clients">
+            {{form.cliente}}
+            {% if form.cliente.errors %}
+                <p id="error_id_cliente" class="invalid-feedback" style="display: block;">
+                    {{form.cliente.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <label for="id_desconto" class="form-label">{{form.desconto.label}}</label>
+        {{form.desconto}}
+        {% if form.desconto.errors %}
+            <p id="error_id_desconto" class="invalid-feedback" style="display: block;">
+                {{form.desconto.errors|striptags}}
+            </p>
+        {% endif %}
+    </div>
+    <input type="hidden" value="{{ id_object }}" name="venda_id">
+        <ul class="nav justify-content-left">
+
+            <li class="nav-item actions_form" >
+                <button class="btn btn-primary" onclick="update_header_venda({{ id_object }})"
+                type="button"> ATUALIZAR VENDA
+                </button>
+            </li>
+
+            <li class="nav-item actions_form" >
+                <button type="button" class="btn btn-success openBtn" onclick="modal_payment({{venda.id}})"
+                    data-bs-toggle="modal" data-bs-target="#modal_view"> $ REALIZAR PAGAMENTO
+                </button>
+            </li>
+
+            <li class="nav-item actions_form" >
+                <button type="button" class="btn btn-primary openBtn" onclick="modal_payment({{ id_object }})"
+                    data-bs-toggle="modal" data-bs-target="#modal_view">
+                    <i class="fa-solid fa-plus"></i> PAGAMENTO MODAL
+                </button>
+           </li>
+
+        </ul>
+</form>

@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Venda #{{ venda.id }} {% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+<link rel="stylesheet" href="{% static 'css/venda.css' %}">
+{% endblock %}
+
+{% block main %}
+{% load venda_tags %}
+<div class="container" id="container_page">
+
+    <div class="modal fade" id="modal_edit_item" tabindex="-1" aria-labelledby="modal_view_label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="color:black;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="title_modal_edit_item">Dados do Produto em Estoque</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="body_modal_edit_item">
+                </div>
+                <div class="modal-footer">
+                    <button onclick="" type="button" class="btn btn-danger"
+                            id="button_action_edit_item">Deletar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal_view" tabindex="-1" aria-labelledby="modal_view_label" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" style="color:black;">
+            <div class="modal-content">
+              <div class="card" id="body_modal_view">
+              </div>
+            </div>
+          </div>
+        </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-2">
+            <a id="link_back_list" href="{% url 'lista-vendas' %}"><i class="fa-sharp fa-solid fa-list"></i> Voltar</a>
+        </div>
+        <div class="col-sm-8" style="text-align:center;">
+            <h3 class="header_text">{% cabecalho_editar_venda %}</h3>
+        </div>
+      </div>
+    </div>
+
+        <div id="heard_mensagem" class="alert alert-success alert-dismissible fade hide"
+            role="alert" style="display:none;background: #fbf276c9;color:#d24500;">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <br>
+
+        <h4>#VENDA: {{ venda.id }} &nbsp;&nbsp;
+        {% if venda.status == 'not_pay' %}
+        <span class="badge badge-warning" style="background-color: #e8ae00;font-size: 18px">
+            {{venda.get_status_display}}
+        </span>
+        {% elif venda.status == 'paid'  %}
+         <span class="badge badge-success" style="background-color: #0fc657db;font-size: 18px">
+            {{venda.get_status_display}}
+        </span>
+        {% elif venda.status == 'cancel'  %}
+         <span class="badge badge-danger" style="background-color: #c64b0fdb;font-size: 18px">
+            {{venda.get_status_display}}
+        </span>
+        {% endif %}
+    </h4>
+        <h4 id="total_venda" style="font-color:gren">Total: R$ {{ venda.value }}</h4>
+
+        {% if venda.status == 'paid' %}
+
+            <div id="form_header_venda">
+                <form method="POST" action="{% url 'novo-pedido' %}" class="row g-3" id="update_header_venda_{{ venda.id }}">
+                    {% csrf_token %}
+                    <div class="col-md-6">
+                        <label for="id_cliente" class="form-label">{{form_venda.client.label}}</label>
+                        {{form_venda.client}}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_desconto" class="form-label">{{form_venda.discount.label}}</label>
+                        {{form_venda.discount}}
+                    </div>
+
+                    <input type="hidden" value="{{venda.id}}" name="venda_id">
+                    <ul class="nav justify-content-left">
+                      <li class="nav-item actions_form" >
+                            <button type="button" class="btn btn-danger openBtn"
+                                    onclick="alter_status({{ venda.id }}, 'cancel')">
+                                <i class="fa-solid fa-minus"></i> CANCELAR VENDA
+                            </button>
+                      </li>
+
+                      <li class="nav-item actions_form" >
+                            <button type="button" class="btn btn-warning openBtn" STYLE="color:white;"
+                                    onclick="alter_status({{ venda.id }}, 'not_pay')">
+                                <i class="fa-solid fa-minus"></i> CANCELAR PAGAMENTO
+                            </button>
+                      </li>
+                    </ul>
+                </form>
+            </div>
+        {% elif venda.status == 'not_pay'  %}
+             <div id="form_header_venda">
+                <form method="POST" action="{% url 'novo-pedido' %}" class="row g-3" id="update_header_venda_{{ venda.id }}">
+                    {% csrf_token %}
+                    <div class="col-md-6">
+                        <label for="id_cliente" class="form-label">{{form_venda.client.label}}</label>
+                        {{form_venda.client}}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_desconto" class="form-label">{{form_venda.discount.label}}</label>
+                        {{form_venda.discount}}
+                    </div>
+
+
+                    <input type="hidden" value="{{venda.id}}" name="venda_id">
+                    <ul class="nav justify-content-left">
+                      <li class="nav-item actions_form" >
+                        <button class="btn btn-primary" onclick="update_header_venda({{ venda.id }})"
+                            type="button"> ATUALIZAR VENDA </button>
+                      </li>
+                       <li class="nav-item actions_form" >
+                            <button type="button" class="btn btn-success openBtn" onclick="modal_payment({{venda.id}})"
+                                data-bs-toggle="modal" data-bs-target="#modal_view"> $ REALIZAR PAGAMENTO
+                            </button>
+                      </li>
+                      <li class="nav-item actions_form" >
+                            <button type="button" class="btn btn-danger openBtn"
+                                    onclick="alter_status({{ venda.id }}, 'cancel')">
+                                <i class="fa-solid fa-minus"></i> CANCELAR VENDA
+                            </button>
+                      </li>
+                    </ul>
+                </form>
+            </div>
+        {% elif venda.status == 'cancel'  %}
+             <span class="badge badge-danger" style="background-color: #c64b0fdb;font-size: 18px">
+                {{venda.get_status_display}}
+            </span>
+        {% endif %}
+
+        <br>
+
+    <div class="container" id="page_itens">
+        <form  method="POST" class="row g-3" id="form_add_item_venda_{{venda.id}}">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <label for="id_produto_list" class="form-label">{{AddProdutoForm.categoria_list.label}}</label>
+                {{AddProdutoForm.categoria_list}}
+            </div>
+
+            <div class="col-md-6">
+                <label for="id_desconto" class="form-label">{{AddProdutoForm.produto_list.label}}</label>
+                {{AddProdutoForm.produto_list}}
+            </div>
+
+            <div class="col-md-6">
+                <label for="id_produto_list" class="form-label">{{AddProdutoForm.quantidade.label}}</label>
+                {{AddProdutoForm.quantidade}}
+            </div>
+
+            <div class="col-md-6">
+                <label for="id_desconto" class="form-label">{{AddProdutoForm.desconto.label}}</label>
+                {{AddProdutoForm.desconto}}
+            </div>
+
+            <button class="btn btn-primary" onclick="add_item_venda({{ venda.id }})"
+                    type="button">Incluir produto na venda</button>
+        </form>
+        <br>
+
+        <div id="div_mensagem" class="alert alert-success alert-dismissible fade hide"
+             role="alert" style="display:none;background: #fbf276c9;color:#d24500;">
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <h2>Listagem de itens</h2>
+
+
+        <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="head_column_table">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Descricao</th>
+              <th scope="col">valor</th>
+              <th scope="col">Quantidade</th>
+              <th scope="col">Desconto</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody class="line_table" id="list_products">
+            {% for item in itens %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.product.description }}</td>
+                    <td>{{ item.product.price }}</td>
+                    <td>
+                        <form method="post" id="item_qted_form_{{item.id}}">
+                             {% csrf_token %}
+                            <div class="input-group input-group-sm">
+                                  <button  type="button" class="btn" id="btn_minus" onclick="decrement_qted({{item.id}})"><i class="fa-solid fa-minus"></i></i></button>
+                                  <input id="input_qted_itens_{{item.id}}" type="text" class="input_qted_itens" value=" {{ item.quantity }}" placeholder=""
+                                         aria-label="Example text with button addon" aria-describedby="button-addon1" readonly>
+                                 <button type="button" class="btn" id="btn_plus" onclick="addition_qted({{item.id}})"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </form>
+
+                    </td>
+                    <td>{{ item.desconto }}</td>
+                    <td scope="col">
+                        <button onclick="modal_view_edit_item({{item.id}},'{{item.produto.descricao}}')"
+                                data-bs-toggle="modal" data-bs-target="#modal_edit_item">
+                            <a id="edit_btn" >
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </button>
+                        <button onclick="modal_view_delete_item({{item.id}},'{{item.produto.descricao}}')"
+                                data-bs-toggle="modal" data-bs-target="#modal_edit_item">
+                                <a id="delete_btn" >
+                                    <i class="fa fa-window-close"></i>
+                                </a>
+                        </button>
+
+                     </td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table></div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block staticfiles %}
+    <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/sale.js' %}"></script>
+    <script src="{% static 'js/choices-config.js' %}"></script>
+    <script src="{% static 'js/payment.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#id_pg_pix').mask('#.##0,00', {reverse: true});
+            $("#id_produto_list").find('option:selected').remove();
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,39 @@
+
+    <form class="row g-3" method="post" id="stock_form_{{ id_object }}">
+        {% csrf_token %}
+        <div class="col-md-12">
+            <h4 class="header_text">{{name_product}}</h4>
+        </div>
+
+        <div class="col-md-12">
+            <label for="id_output_stock" class="form-label">{{form.output_stock.label}}</label>
+            {{form.output_stock}}
+            {% if form.output_stock.errors %}
+                <p id="error_id_output_stock" class="invalid-feedback" style="display: block;">
+                    {{form.output_stock.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="col-md-12">
+            <table class="table  table-bordered border-secondary">
+              <thead>
+                <tr style="text-align: center;">
+
+                  <th scope="col">Estoque Atual</th>
+                  <th scope="col">Saída</th>
+                  <th scope="col">Total</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-primary" style="text-align: center;">
+                  <td id="current_value">{{value_stock}}</td>
+                  <td id="new_value">0</td>
+                  <td id="total_value">{{value_stock}}</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+
+    </form>

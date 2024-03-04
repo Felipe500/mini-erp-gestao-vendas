@@ -1,0 +1,32 @@
+<h6>CADASTRAR NOVO GRUPO</h6>
+<hr>
+<form method="post" class="row g-3" id="id_form_group_{{pk}}" autocomplete="off">
+        {% csrf_token %}
+        <div class="col-md-12">
+            <label for="id_name" class="form-label">{{form.name.label}}</label>
+            {{form.name}}
+            {% if form.name.errors %}
+                <p id="error_id_name" class="invalid-feedback" style="display: block;">
+                    {{form.name.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-md-12">
+            <label for="id_permissions" class="form-label">{{form.permissions.label}}</label>
+            {{form.permissions}}
+        </div>
+     {% if pk == 0 %}
+    <div class="col-md-12">
+        <button type="button" class="btn btn-primary text-white" id="button_action" onclick="create_or_update_group({{pk}})">
+            Criar Nova Conta
+        </button>
+    </div>
+    {% else %}
+    <div class="col-md-12">
+        <button type="button" class="btn btn-primary text-white" id="button_action" onclick="create_or_update_group({{pk}})">
+            Atualizar
+        </button>
+    </div>
+    {% endif %}
+
+ </form>

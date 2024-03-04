@@ -1,0 +1,38 @@
+
+    <form class="row g-3" method="post" id="client_form_{{ id_client }}">
+        {% csrf_token %}
+        <div class="col-md-6">
+            <label for="id_name" class="form-label">{{form.name.label}}</label>
+            {{form.name}}
+            {% if form.name.errors %}
+                <p id="error_id_name" class="invalid-feedback" style="display: block;">
+                    {{form.name.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <label for="id_surname" class="form-label">{{form.surname.label}}</label>
+            {{form.surname}}
+        </div>
+        <div class="col-md-6">
+            <label for="id_phone" class="form-label">{{form.phone.label}}</label>
+            {{form.phone}}
+        </div>
+        <div class="col-md-6">
+            <label for="id_email" class="form-label">{{form.email.label}}</label>
+            {{form.email}}
+        </div>
+        <div class="col-md-6">
+            <label for="id_birth_date" class="form-label">{{form.birth_date.label}}</label>
+            {{form.birth_date}}
+        </div>
+        <div class="col-md-6">
+           <label for="id_zip" class="form-label">{{form.zip.label}}</label>
+            {{form.zip}}
+        </div>
+        <div class="col-12">
+            <label for="id_address" class="form-label">{{form.address.label}}</label>
+            {{form.address}}
+        </div>
+
+    </form>

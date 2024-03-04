@@ -1,0 +1,33 @@
+{% for item in items_venda %}
+    <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.product.description }}</td>
+        <td>{{ item.product.price }}</td>
+        <td>
+            <form method="post" id="item_qted_form_{{item.id}}">
+                 {% csrf_token %}
+                <div class="input-group input-group-sm">
+                      <button  type="button" class="btn" id="btn_minus" onclick="decrement_qted({{item.id}})"><i class="fa-solid fa-minus"></i></i></button>
+                      <input id="input_qted_itens_{{item.id}}" type="text" class="input_qted_itens" value=" {{ item.quantity }}" placeholder=""
+                             aria-label="Example text with button addon" aria-describedby="button-addon1" readonly>
+                     <button type="button" class="btn" id="btn_plus" onclick="addition_qted({{item.id}})"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </form>
+        </td>
+        <td>{{ item.discount }}</td>
+        <td scope="col">
+            <button onclick="modal_view_edit_item({{item.id}},'{{item.produto.descricao}}')"
+                    data-bs-toggle="modal" data-bs-target="#modal_edit_item">
+                <a id="edit_btn" >
+                    <i class="fa fa-pencil"></i>
+                </a>
+            </button>
+            <button onclick="modal_view_delete_item({{item.id}},'{{item.produto.descricao}}')"
+                    data-bs-toggle="modal" data-bs-target="#modal_edit_item">
+                    <a id="delete_btn" >
+                        <i class="fa fa-window-close"></i>
+                    </a>
+            </button>
+         </td>
+    </tr>
+{% endfor %}

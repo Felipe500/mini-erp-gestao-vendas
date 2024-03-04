@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block main %}
+<div class="body-s">
+	<div class="main">
+	ssss
+
+			<div class="signup">
+				<form method="POST" action="{% url 'account_login' %}">
+					 {% csrf_token %}
+					<label for="chk" aria-hidden="true">Login</label>
+
+					{{ form.as_p }}
+
+					  {% if redirect_field_value %}
+					  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+					  {% endif %}
+					  <a class="button secondaryAction" style="text-decoration: none;margin: 20px auto;justify-content: center;display: flex;" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+					  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+					<ul>
+
+
+
+
+				  </ul>
+
+
+
+
+				</form>
+			</div>
+	</div>
+	</div>
+
+	<div class="login">
+
+
+	</div>
+
+{% endblock %}
+

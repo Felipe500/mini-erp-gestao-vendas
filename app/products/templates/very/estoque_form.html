@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Administracao {% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/cliente.css' %}">
+{% endblock %}
+
+{% block main %}
+<div class="container" id="container_page">
+
+    <h4 class="header_text">Alterar estoque - <div style="color: #f1f22e;">{{id_product}}</div></h4>
+    <form method="POST" class="row g-3">
+        {% csrf_token %}
+
+        <div id="div_id_estoque_atual"  class="col-md-6">
+             <label for="id_estoque_atual" class="">
+                 {{form.estoque_atual.label}}
+            </label>
+             <div>
+                 {{form.estoque_atual}}
+             </div>
+             {% if form.estoque_atual.errors %}
+                <p id="error_estoque_atual" class="invalid-feedback" style="display: block;">
+                    {{form.estoque_atual.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+        <div id="div_id_estoque_minimo"  class="col-md-6">
+             <label for="id_estoque_minimo" class="">
+                 {{form.estoque_minimo.label}}
+            </label>
+             <div>
+                 {{form.estoque_minimo}}
+             </div>
+             {% if form.estoque_minimo.errors %}
+                <p id="error_id_estoque_minimo" class="invalid-feedback" style="display: block;">
+                    {{form.estoque_minimo.errors|striptags}}
+                </p>
+            {% endif %}
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary" style="width: 100%; height: 115%;">Salvar</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

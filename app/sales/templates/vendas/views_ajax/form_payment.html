@@ -1,0 +1,109 @@
+ <form method="post" class="payment_form" id="payment_form_{{venda.id}}">
+        {% csrf_token %}
+
+        <h3>Selecione o meio de pagamento</h3>
+        <label for="id_payment_methods" class="form-label">{{form_payment.set_payment_methods.label}}</label>
+         <fieldset>
+             {{form_payment.set_payment_methods}}
+         </fieldset>
+        <div class="show" id="forms-pg">
+            <div class="show" id="pg_especie">
+                <label for="id_payment_methods" class="form-label">{{form_payment.pg_especie.label}}</label>
+                {{form_payment.pg_especie}}
+            </div>
+
+            <div class="hidden" id="pg_pix">
+                <label for="id_payment_methods" class="form-label">{{form_payment.pg_pix.label}}</label>
+                {{form_payment.pg_pix}}
+            </div>
+
+            <div class="hidden" id="pg_card">
+                <label for="id_payment_methods" class="form-label">{{form_payment.pg_card.label}}</label>
+                {{form_payment.pg_card}}
+                {{ListMAqCartaoForm}}
+            <br>
+             <label for="taxas_maq">Formas de pagamento: </label>
+
+                <select name="taxas_maq" id="taxas_maq" class="passport">
+                  <option value={{taxas_maq.deb}}>Débito - {{taxas_maq.deb}}%</option>
+                  <option value={{taxas_maq.cre1}}>Crédito x1 - {{taxas_maq.cre1}}%</option>
+                    <option value={{taxas_maq.cre2}}>Crédito x2 - {{taxas_maq.cre2}}%</option>
+                    <option value={{taxas_maq.cre3}}>Crédito x3 - {{taxas_maq.cre3}}%</option>
+                    <option value={{taxas_maq.cre4}}>Crédito x4 - {{taxas_maq.cre4}}%</option>
+                    <option value={{taxas_maq.cre5}}>Crédito x5 - {{taxas_maq.cre5}}%</option>
+                    <option value={{taxas_maq.cre6}}>Crédito x6 - {{taxas_maq.cre6}}%</option>
+                    <option value={{taxas_maq.cre7}}>Crédito x7 - {{taxas_maq.cre7}}%</option>
+                    <option value={{taxas_maq.cre8}}>Crédito x8 - {{taxas_maq.cre8}}%</option>
+                    <option value={{taxas_maq.cre9}}>Crédito x9 - {{taxas_maq.cre9}}%</option>
+                    <option value={{taxas_maq.cre10}}>Crédito x10 - {{taxas_maq.cre10}}%</option>
+                    <option value={{taxas_maq.cre11}}>Crédito x11 - {{taxas_maq.cre11}}%</option>
+                    <option value={{taxas_maq.cre12}}>Crédito x12 - {{taxas_maq.cre12}}%</option>
+                </select>
+
+            </div> </div>
+
+          <br>
+        <div class="subtotal">
+            <p id="valor_a_apagar">R$ 0,00 --></p>
+            <p id="total_pagar">R$ {{ total_venda|floatformat:2 }}</p>
+
+        </div>
+        <div class="alert alert-danger hidden" role="alert">
+          valor de pagamento está superior ao valor da venda
+        </div>
+        <div class="alert alert-danger hidden" role="alert">
+          valor de pagamento está superior ao valor da venda
+        </div>
+
+        <button type="button" class="btn btn-success " onclick="post_payment({{ venda.id }})">
+            Realizar Pagamento</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+         <div id="val_error" class="invalid-feedback">
+          Valor que está sendo pago é inferior ou superior ao valor da venda. Por favor confira o valor!
+        </div>
+    </form>
+
+     <script type="text/javascript">
+            $(document).ready(function() {
+            console.log('lendo func');
+            $('#pix_input').mask('#.##0,00', {reverse: true});
+            $('#card_input').mask('#.##0,00', {reverse: true});
+            $('#especie_input').mask('#.##0,00', {reverse: true});
+            var v1 = $('#pix_input2').mask('#.##0,00', {reverse: true});
+            var v2 = $('#pix_input2').mask('#.##0,00', {reverse: true}) + 2;
+            console.log('v2 '+v2);
+            $("#id_produto_list").find('option:selected').remove();
+            $(".choices__list--single").empty();
+
+            var total_amount = function(){
+            var sum=0;
+
+            $('.amount').each(function(){
+                   var num = $(this).val().replace(',','').replace('.','');
+                   if (num != 0){
+                        sum += parseFloat(num);
+                        console.log(sum);
+                        console.log(sum/100);
+                   $('#valor_a_apagar').text('R$ '+ sum/100 +' -->')
+                }
+            });
+
+            $('#total_amount').val(sum.toFixed(2));
+               }
+                $('.amount').keyup(function(){
+                total_amount();
+               })
+            });
+
+            function set_value(obj){
+             if (obj.value == ""){
+                   document.getElementById(obj.id).value = 0;
+             }
+             if ((obj.value[0] == 0) &&  (obj.value.length > 1 )){
+                    console.log('valor '+obj.value);
+                    document.getElementById(obj.id).value = obj.value.substring(1);
+             }  console.log('valor '+obj.value);
+                console.log('casas '+obj.value.length);
+                 console.log('2obj.value.length');
+            }
+        </script>

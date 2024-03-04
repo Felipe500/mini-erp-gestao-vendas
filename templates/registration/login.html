@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+{% block main %}
+<section >
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+          class="img-fluid" alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <form method="post">
+            {% csrf_token %}
+            <br><br>
+            <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                <p class="h2">Entrar</p>
+            </div>
+
+          <div class="divider d-flex align-items-center my-4">
+
+          </div>
+
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <label class="form-label" for="id_username">Email</label>
+            <input type="text" name="username" value="" autofocus=""  class="form-control form-control-lg" autocapitalize="none" autocomplete="username"
+                     maxlength="150" required="" id="id_username" placeholder="Email..." />
+              <div  class="invalid-feedback">
+                Digite o nome de seu usuário...
+              </div>
+          </div>
+
+
+          <!-- Password input -->
+          <div class="form-outline mb-3">
+              <label class="form-label" for="id_password">Senha</label>
+              <input type="password" name="password" class="form-control form-control-lg"
+                     autocomplete="current-password" required="" id="id_password" placeholder="Digite sua senha...">
+          </div>
+
+               {% if form.non_field_errors %}
+                <p id="error_id_is_whatsapp" class="invalid-feedback" style="display: block">
+                    <strong>{{form.non_field_errors|striptags}}</strong>
+                </p>
+            {% endif %}
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <button type="submit" class="btn btn-primary btn-lg"
+              style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+
+          </div>
+
+             <br> <br>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

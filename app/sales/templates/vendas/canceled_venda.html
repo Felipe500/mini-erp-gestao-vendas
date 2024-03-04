@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Venda #{{ venda.id }} Cancel{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+<link rel="stylesheet" href="{% static 'css/venda.css' %}">
+<script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
+{% endblock %}
+
+{% block main %}
+{% load venda_tags %}
+<div class="container" id="container_page">
+
+    <div class="modal fade" id="modal_edit_item" tabindex="-1" aria-labelledby="modal_view_label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="color:black;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="title_modal_edit_item">Dados do Produto em Estoque</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="body_modal_edit_item">
+                </div>
+                <div class="modal-footer">
+                    <button onclick="" type="button" class="btn btn-danger"
+                            id="button_action_edit_item">Deletar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal_view" tabindex="-1" aria-labelledby="modal_view_label" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" style="color:black;">
+            <div class="modal-content">
+              <div class="card" id="body_modal_view">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="header_text">{% cabecalho_editar_venda %}</h3>
+        <div id="heard_mensagem" class="alert alert-success alert-dismissible fade hide"
+            role="alert" style="display:none;background: #fbf276c9;color:#d24500;">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <br>
+    <h4>#VENDA: {{ venda.id }} &nbsp;&nbsp;
+         <span class="badge badge-danger" style="background-color: #ee3228eb;font-size: 18px">
+            Cancelado
+        </span>
+    </h4>
+        <h4 id="total_venda" style="font-color:gren">Total: R$ {{ venda.valor }}</h4>
+
+            <div id="form_header_venda">
+                <form method="POST" action="{% url 'novo-pedido' %}" class="row g-3" id="update_header_venda_{{ venda.id }}">
+                    {% csrf_token %}
+                    <div class="col-md-4">
+                        <label for="id_cliente" class="form-label">{{form_venda.cliente.label}}</label>
+                        {{form_venda.cliente}}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_desconto" class="form-label">{{form_venda.desconto.label}}</label>
+                        {{form_venda.desconto}}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_status" class="form-label">{{form_venda.status.label}}</label>
+                        {{form_venda.status}}
+                    </div>
+                    <input type="hidden" value="{{venda.id}}" name="venda_id">
+                    <ul class="nav justify-content-left">
+                      <li class="nav-item actions_form" >
+                            <button type="button" class="btn btn-success openBtn"
+                                    onclick="alter_status({{ venda.id }},'not_pay')">
+                                <i class="fa-solid fa-plus"></i> RECUPERAR VENDA
+                            </button>
+                      </li>
+                    </ul>
+                </form>
+            </div>
+
+        <br>
+
+    <div class="container" id="page_itens">
+
+        <h2>Listagem de itens</h2>
+
+        <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="head_column_table">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Descricao</th>
+              <th scope="col">valor</th>
+              <th scope="col">Quantidade</th>
+              <th scope="col">Desconto</th>
+            </tr>
+          </thead>
+          <tbody class="line_table" id="list_products">
+            {% for item in itens %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.produto.descricao }}</td>
+                    <td>{{ item.produto.preco }}</td>
+                    <td>
+                        <form method="post" id="item_qted_form_{{item.id}}">
+                             {% csrf_token %}
+                            <div class="input-group input-group-sm">
+                                  <input id="input_qted_itens_{{item.id}}" type="text" class="input_qted_itens" value=" {{ item.quantidade }}" placeholder=""
+                                         aria-label="Example text with button addon" aria-describedby="button-addon1" readonly>
+                            </div>
+                        </form>
+                    </td>
+                    <td>{{ item.desconto }}</td>
+
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table></div>
+    </div>
+</div>
+ <! -- --------------------END IF------------------- -->
+
+{% endblock %}
+
+{% block staticfiles %}
+    <script src="{% static 'js/sale.js' %}"></script>
+    <script src="{% static 'js/choices-config.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/funcoes.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            console.log('lendo func');
+            $('#pix_input2').mask('#.##0,00', {reverse: true});
+            $("#id_produto_list").find('option:selected').remove();
+            console.log('obj.value.length');
+            var total_amount = function(){
+            var sum=0;
+
+            $('.amount').each(function(){
+                   var num = $(this).val().replace(',','');
+                   if (num != 0){
+                        sum += parseFloat(num);
+                        console.log(sum);
+                   $('#valor_a_apagar').text('R$ '+ sum +' -->')
+                }
+            });
+
+            $('#total_amount').val(sum.toFixed(2));
+               }
+                $('.amount').keyup(function(){
+                total_amount();
+               })
+            });
+
+        function set_value(obj){
+         if (obj.value == ""){
+               document.getElementById(obj.id).value = 0;
+         }
+         if ((obj.value[0] == 0) &&  (obj.value.length > 1 )){
+                document.getElementById(obj.id).value = obj.value.substring(1);
+         }
+            console.log(obj.value.length);
+             console.log('obj.value.length');
+        }
+
+
+    </script>
+{% endblock %}

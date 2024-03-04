@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Clientes {% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/cliente.css' %}">
+{% endblock %}
+
+{% block main %}
+
+
+<div class="container" id="container_page">
+</div>
+
+
+{% endblock %}
+
+{% block staticfiles %}
+    <script src="{% static 'js/client.js' %}"></script>
+{% endblock %}

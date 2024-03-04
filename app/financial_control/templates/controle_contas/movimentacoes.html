@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Movimentações {% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/cliente.css' %}">
+{% endblock %}
+
+{% block main %}
+<div class="container" id="container_page">
+    <h3 class="header_text"><b>Resumo da Movimentações</b></h3><br>
+    <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+    <form  method="GET" class="row g-3">
+        <div class="col-md-3">
+            <div id="div_id_tipo_entrada_filter" class="form-group">
+             <label for="id_descricao_filter" class="">
+                 {{filters.tipo_entrada_filter.label}}:
+             </label>
+             <div>
+                 {{ filters.tipo_entrada_filter }}
+             </div>
+             {% if filters.tipo_entrada_filter.errors %}
+                <p id="error_id_tipo_entrada_filter" class="invalid-feedback">
+                    <strong>{{filters.tipo_entrada_filter.errors|striptags}}</strong>
+                </p>
+            {% endif %}
+         </div>
+        </div>
+
+        <div class="col-md-2">
+            <div id="div_id_start_date" class="form-group">
+                 <label for="id_start_date_filter" class="">
+                     {{filters.start_date_filter.label}}:
+                </label>
+                 <div>
+                       {{ filters.start_date_filter }}
+                 </div>
+                 {% if filters.start_date_filter.errors %}
+                    <p id="error_id_start_date" class="invalid-feedback">
+                        <strong>{{filters.start_date_filter.errors|striptags}}</strong>
+                    </p>
+                {% endif %}
+             </div>
+
+        </div>
+        <div class="col-md-2">
+             <label for="id_end_date" class="">
+                 {{filters.end_date_filter.label}}:
+            </label>
+             <div>
+                 {{ filters.end_date_filter }}
+             </div>
+             {% if filters.end_date_filter.errors %}
+                <p id="error_id_end_date" class="invalid-feedback">
+                    <strong>{{filters.end_date_filter.errors|striptags}}</strong>
+                </p>
+            {% endif %}
+        </div>
+
+    </form>
+
+
+        <div id="list_mov">
+
+        </div>
+
+        <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+            <h4 align="center">Minhas Entradas</h4><br>
+            <div class="row">
+            <div class="col-sm-4">
+                <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                <div class="card-header" align="center"><H3>CARTÃO</H3> </div>
+                    <div class="card-body">
+                        <h5 class="card-title" align="center">R$ {{val_cartao}}</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                    <div class="card-header" align="center"><H3>PIX</H3> </div>
+                    <div class="card-body">
+                        <h5 class="card-title" align="center">R$ {{entradas_pix}}</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                    <div class="card-header" align="center"><H3>ESPECIE</H3> </div>
+                    <div class="card-body">
+                        <h5 class="card-title" align="center">R$ {{entradas_especie}}</h5>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+
+     </div>
+    <!-- End w3-container-->
+    </div>
+    <!-- End container_page-->
+    </div>
+
+{% endblock %}
+
+{% block staticfiles %}
+
+
+    <script src="{% static 'js/config.js' %}"></script>
+    <script src="{% static 'js/movements.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+                console.log('query > update_list_bills_pay');
+                update_list_movements(1);
+         });
+    </script>
+{% endblock %}
